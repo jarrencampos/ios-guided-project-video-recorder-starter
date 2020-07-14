@@ -38,9 +38,15 @@ class CameraViewController: UIViewController {
             preconditionFailure("This session can't handle this type of input: \(cameraInput)")
         }
         
+        if captureSession.canSetSessionPreset(.hd1920x1080){
+            captureSession.sessionPreset = .hd1920x1080
+        }
+        
         captureSession.addInput(cameraInput)
         
         captureSession.commitConfiguration()
+        
+        cameraView.session = captureSession
     }
     
     private func bestCamera() -> AVCaptureDevice {
