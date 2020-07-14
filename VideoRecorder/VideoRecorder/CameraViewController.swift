@@ -49,6 +49,7 @@ class CameraViewController: UIViewController {
 
     private func setupCamera() {
         let camera = bestCamera()
+        let mircrophone = bestMicrophone()
         
         captureSession.beginConfiguration()
         
@@ -56,9 +57,19 @@ class CameraViewController: UIViewController {
             preconditionFailure("This device is not supported")
         }
         
+        guard let microphoneInput = try? AVCaptureDeviceInput(device: mircrophone) else {
+            preconditionFailure("Cant access microphone")
+        }
+        
         guard captureSession.canAddInput(cameraInput) else {
             preconditionFailure("This session can't handle this type of input: \(cameraInput)")
         }
+        
+        guard captureSession.canAddInput(microphoneInput) else {
+            preconditionFailure("This session can't handle this type of input: \(microphoneInput)")
+        }
+        
+        captureSession.addInput(microphoneInput)
         
         if captureSession.canSetSessionPreset(.hd1920x1080){
             captureSession.sessionPreset = .hd1920x1080
@@ -86,6 +97,11 @@ class CameraViewController: UIViewController {
         }
         preconditionFailure("No camera on device match the specs that we need.")
     }
+    
+    private func bestMicrophone() -> AVCaptureDevice {
+        if let device = AVCaptureDevice.default(for: .audio) {
+            return device
+        }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
