@@ -18,12 +18,12 @@ class CameraPreviewView: UIView {
         return AVCaptureVideoPreviewLayer.self
     }
     
-    var videoPlayerView: AVCaptureVideoPreviewLayer {
+    var videoPreviewLayer: AVCaptureVideoPreviewLayer {
         return layer as! AVCaptureVideoPreviewLayer
     }
     
     var session: AVCaptureSession? {
-        get { return videoPlayerView.session }
-        set { videoPlayerView.session = newValue }
+        get { return videoPreviewLayer.session }
+        set { videoPreviewLayer.session = newValue }
     }
 }
