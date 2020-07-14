@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import AVKit
 
 class CameraViewController: UIViewController {
     
@@ -53,7 +54,12 @@ class CameraViewController: UIViewController {
     @IBAction func playRecording(_ sender: UITapGestureRecognizer) {
         guard sender.state  == .ended else { return }
         
-        player.seek(to: CMTime(seconds: 0, preferredTimescale: 600)) // seconds = N/D, D = 600
+//        player.seek(to: CMTime(seconds: 0, preferredTimescale: 600)) // seconds = N/D, D = 600
+        
+        let playerVC = AVPlayerViewController()
+        playerVC.player = player
+        
+        self.present(playerVC, animated: true, completion: nil)
     }
 
     private func setupCamera() {
