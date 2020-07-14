@@ -43,8 +43,17 @@ class CameraViewController: UIViewController {
             
             playerView.frame = topRect
             view.addSubview(playerView)
+            
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(playRecording(_:)))
+            playerView.addGestureRecognizer(tapGesture)
         }
         player.play()
+    }
+    
+    @IBAction func playRecording(_ sender: UITapGestureRecognizer) {
+        guard sender.state  == .ended else { return }
+        
+        player.seek(to: CMTime(seconds: 0, preferredTimescale: 600)) // seconds = N/D, D = 600
     }
 
     private func setupCamera() {
@@ -102,6 +111,8 @@ class CameraViewController: UIViewController {
         if let device = AVCaptureDevice.default(for: .audio) {
             return device
         }
+     preconditionFailure("Microphone not available")
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
