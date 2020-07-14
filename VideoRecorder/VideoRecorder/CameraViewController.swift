@@ -58,6 +58,17 @@ class CameraViewController: UIViewController {
         }
         preconditionFailure("No camera on device match the specs that we need.")
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        captureSession.startRunning()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        captureSession.stopRunning()
+    }
 
     @IBAction func recordButtonPressed(_ sender: Any) {
 
