@@ -12,6 +12,7 @@ import AVFoundation
 class CameraViewController: UIViewController {
     
     lazy private var captureSession = AVCaptureSession()
+    lazy private var fileOutput = AVCaptureMovieFileOutput()
 
     @IBOutlet var recordButton: UIButton!
     @IBOutlet var cameraView: CameraPreviewView!
@@ -42,6 +43,12 @@ class CameraViewController: UIViewController {
             captureSession.sessionPreset = .hd1920x1080
         }
         
+        guard captureSession.canAddOutput(fileOutput) else {
+            preconditionFailure("This session can't handle this type of output: \(fileOutput)")
+        }
+        
+        captureSession.addOutput(fileOutput)
+        
         captureSession.addInput(cameraInput)
         
         captureSession.commitConfiguration()
@@ -71,6 +78,11 @@ class CameraViewController: UIViewController {
     }
 
     @IBAction func recordButtonPressed(_ sender: Any) {
+        if fileOutput.isRecording {
+            fileOutput.stopRecording()
+        } else {
+            fileOutput.startRecording(to: newRecordingURL(), recordingDelegate: self)
+        }
 
 	}
 	
